@@ -11,7 +11,6 @@ generate_new_name() {
       NEW_ROBOT_NAME+=${ALPHABET[$(( RANDOM % 26 ))]}
     fi
   done
-  save_names_metadata
 }
 
 save_names_metadata() {
@@ -20,6 +19,22 @@ save_names_metadata() {
   else
     echo "$NEW_ROBOT_NAME;0" >> .meta.robot_name
   fi
+}
+
+update_meta_data() {
+  while read bot; do
+    [[ "$(echo $bot | cut -d ";" -f 1)" != "$1" ]] && echo $bot >> .meta.robot_name.1
+  done <.meta.robot_name
+  rm .meta.robot_name && mv .meta.robot_name.1 .meta.robot_name
+  echo "$NEW_ROBOT_NAME;$restart_amt" >> .meta.robot_name
+}
+
+restart_bot() {
+  get_bot_info $1
+  generate_new_name
+  restart_amt=$(( restart_amt + 1 ))
+  update_meta_data $1
+  echo $NEW_ROBOT_NAME
 }
 
 print_meta() {
@@ -32,7 +47,14 @@ print_meta() {
       name_found=0
     fi
   done <.meta.robot_name
-  [[ "$name_found" = 1 && "$1" != "all" ]] && robot_not_found_error
+  [[ "$name_found" = 1 && "$1" != "all" ]] && robot_not_found_error $1
+}
+
+get_bot_info() {
+  while read bot; do
+    [[ "$(echo $bot | cut -d ";" -f 1)" = "$1" ]] && format_robot_info bot
+  done <.meta.robot_name
+  [[ "$ROBOT_INFO" = "" ]] && robot_not_found_error
 }
 
 format_robot_info() {
@@ -43,12 +65,17 @@ format_robot_info() {
 
 robot_not_found_error() {
   echo "ERROR: Invalid name given. Could not find data on $1."
+  exit
 }
 
 case $1 in
   new)
     generate_new_name
+    save_names_metadata
     echo $NEW_ROBOT_NAME
+  ;;
+  restart)
+    restart_bot $2
   ;;
   display)
     print_meta $2

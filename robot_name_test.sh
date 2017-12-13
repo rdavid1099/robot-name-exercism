@@ -64,9 +64,17 @@ teardown() {
 
 @test "error is printed if unknown name is passed to script" {
   ROBOT_ONE=$(bash $PWD/robot_name.sh new)
-
   run bash robot_name.sh display C3PO
 
   [[ "$status" -eq "0" ]]
   [[ "$output" = "ERROR: Invalid name given. Could not find data on C3PO." ]]
+}
+
+@test "robot is reset and generates a new name with updated data" {
+  ROBOT=$(bash $PWD/robot_name.sh new)
+  NEW_NAME=$(bash $PWD/robot_name.sh restart $ROBOT)
+  run bash robot_name.sh display $NEW_NAME
+
+  [[ "$status" -eq "0" ]]
+  [[ "$output" = "ROBOT: $NEW_NAME, TIMES RESTARTED: 1" ]]
 }
