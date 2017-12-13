@@ -66,7 +66,7 @@ teardown() {
   ROBOT_ONE=$(bash $PWD/robot_name.sh new)
   run bash robot_name.sh display C3PO
 
-  [[ "$status" -eq "0" ]]
+  [[ "$status" -eq "1" ]]
   [[ "$output" = "ERROR: Invalid name given. Could not find data on C3PO." ]]
 }
 
@@ -83,7 +83,7 @@ teardown() {
   ROBOT=$(bash $PWD/robot_name.sh new)
   run bash robot_name.sh restart R2D2
 
-  [[ "$status" -eq "0" ]]
+  [[ "$status" -eq "1" ]]
   [[ "$output" = "ERROR: Invalid name given. Could not find data on R2D2." ]]
 }
 

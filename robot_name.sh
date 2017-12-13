@@ -11,6 +11,7 @@ generate_new_name() {
       NEW_ROBOT_NAME+=${ALPHABET[$(( RANDOM % 26 ))]}
     fi
   done
+  check_uniqueness $NEW_ROBOT_NAME
 }
 
 save_names_metadata() {
@@ -63,9 +64,19 @@ format_robot_info() {
   ROBOT_INFO="ROBOT: $robot_name, TIMES RESTARTED: $restart_amt"
 }
 
+check_uniqueness() {
+  unique=0
+  if [[ -e ".meta.robot_name" ]]; then
+    while read bot; do
+      [[ "$(echo $bot | cut -d ";" -f 1)" = "$1" ]] && unique=1
+    done <.meta.robot_name
+  fi
+  [[ "$unique" = 1 ]] && generate_new_name
+}
+
 robot_not_found_error() {
   echo "ERROR: Invalid name given. Could not find data on $1."
-  exit
+  exit 1
 }
 
 case $1 in
