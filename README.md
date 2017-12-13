@@ -27,7 +27,7 @@ fact unique.
 
 ## Source
 
-Modified from [Ruby Exercism](https://exercism.io/exercises/ruby/robot-name/readme)
+Modified from [Ruby Exercism](http://exercism.io/exercises/ruby/robot-name/readme)
 which was created following a debugging session with Paul Blackwell at gSchool.
 
 ## Submitting Incomplete Solutions

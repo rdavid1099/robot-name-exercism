@@ -7,6 +7,6 @@ setup() {
 @test "it generates a valid robot name" {
   run bash robot_name.sh new
 
-  [ "$status" -eq "0" ]
+  [[ "$status" -eq "0" ]]
   [[ "$output" =~ $NAME_REGEXP ]]
 }
