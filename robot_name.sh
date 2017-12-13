@@ -21,10 +21,24 @@ save_names_metadata() {
   fi
 }
 
+format_robot_info() {
+  robot_name=$(echo $bot | cut -d ";" -f 1)
+  created_at=$(echo $bot | cut -d ";" -f 2)
+  updated_at=$(echo $bot | cut -d ";" -f 3)
+  ROBOT_INFO="ROBOT: $robot_name, CREATED: $created_at, UPDATED: $updated_at"
+}
+
 case $1 in
   new)
     generate_new_name
     echo $NEW_ROBOT_NAME
+  ;;
+  display_all)
+    while read bot; do
+      ROBOT_INFO=""
+      format_robot_info bot
+      echo $ROBOT_INFO
+    done <.meta.robot_name
   ;;
   *)
     echo "ERROR: Invalid command"
