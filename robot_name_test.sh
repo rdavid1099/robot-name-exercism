@@ -10,3 +10,10 @@ setup() {
   [[ "$status" -eq "0" ]]
   [[ "$output" =~ $NAME_REGEXP ]]
 }
+
+@test "each new robot name is unique" {
+  run bash -c "bash $PWD/robot_name.sh new; bash $PWD/robot_name.sh new"
+
+  [[ "$status" -eq "0" ]]
+  [[ "${lines[0]}" != "${lines[1]}" ]]
+}
