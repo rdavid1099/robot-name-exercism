@@ -8,15 +8,15 @@ The first time you boot them up, this script generates a random name is
 in the format of two uppercase letters followed by three digits, such as RX837
 or BC811.
 
-The names are saved by the script along with the robots' activation and latest
-updated dates. If a robot's name is passed in as an argument, the script prints
-out the given robot's activation and latest updated date. If the name passed to
-the script is not found, the script prints out an error message.
+The names are saved by the script along with the number of times the robot has
+been reset. If a robot's name is passed in as an argument, the script prints
+out the given robot's data. If the name passed to the script is not found, the
+script prints out an error message.
 
 Every once in a while we need to reset a robot to its factory settings,
-which means that their name gets wiped. The next time you pass in the new robot's
-name to the script it pulls up the original activation date with the the date
-of when the name was last updated.
+which means that their name gets wiped. The next time you pass in the robot's
+new name to the script it pulls up the robot's data which will now have at least
+one number of resets.
 
 The names must be random: they should not follow a predictable sequence.
 Random names means a risk of collisions. Your solution must ensure that

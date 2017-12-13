@@ -1,7 +1,6 @@
 #!/bin/bash
 
 declare -a ALPHABET=(A B C D E F G H I J K L M N O P Q R S T U V W X Y Z)
-current_time=$(date "+%Y-%m-%d.%H:%M:%S")
 
 generate_new_name() {
   NEW_ROBOT_NAME=""
@@ -17,15 +16,16 @@ generate_new_name() {
 
 save_names_metadata() {
   if [[ ! -e ".meta.robot_name" ]]; then
-    echo "$NEW_ROBOT_NAME;$current_time;$current_time" > .meta.robot_name
+    echo "$NEW_ROBOT_NAME;0" > .meta.robot_name
+  else
+    echo "$NEW_ROBOT_NAME;0" >> .meta.robot_name
   fi
 }
 
 format_robot_info() {
   robot_name=$(echo $bot | cut -d ";" -f 1)
-  created_at=$(echo $bot | cut -d ";" -f 2)
-  updated_at=$(echo $bot | cut -d ";" -f 3)
-  ROBOT_INFO="ROBOT: $robot_name, CREATED: $created_at, UPDATED: $updated_at"
+  restart_amt=$(echo $bot | cut -d ";" -f 2)
+  ROBOT_INFO="ROBOT: $robot_name, TIMES RESTARTED: $restart_amt"
 }
 
 case $1 in
