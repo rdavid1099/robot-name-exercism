@@ -1,6 +1,7 @@
 #!/bin/bash
 
 declare -a ALPHABET=(A B C D E F G H I J K L M N O P Q R S T U V W X Y Z)
+current_time=$(date "+%Y-%m-%d.%H:%M:%S")
 
 generate_new_name() {
   NEW_ROBOT_NAME=""
@@ -11,6 +12,13 @@ generate_new_name() {
       NEW_ROBOT_NAME+=${ALPHABET[$(( RANDOM % 26 ))]}
     fi
   done
+  save_names_metadata
+}
+
+save_names_metadata() {
+  if [[ ! -e ".meta.robot_name" ]]; then
+    echo "$NEW_ROBOT_NAME;$current_time;$current_time" > .meta.robot_name
+  fi
 }
 
 case $1 in
