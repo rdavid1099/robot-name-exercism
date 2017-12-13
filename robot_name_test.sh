@@ -18,10 +18,11 @@ teardown() {
 }
 
 @test "each new robot name is unique" {
-  run bash -c "bash $PWD/robot_name.sh new; bash $PWD/robot_name.sh new"
+  ROBOT_ONE=$(bash $PWD/robot_name.sh new)
+  ROBOT_TWO=$(bash $PWD/robot_name.sh new)
 
   [[ "$status" -eq "0" ]]
-  [[ "${lines[0]}" != "${lines[1]}" ]]
+  [[ "$ROBOT_ONE" != "$ROBOT_TWO" ]]
 }
 
 @test "new robot data is saved to .meta.robot_name" {
@@ -32,7 +33,6 @@ teardown() {
 }
 
 @test "one robot's information is displayed" {
-  # Example Output: ROBOT: AB123, TIMES RESTARTED: 0
   ROBOT=$(bash $PWD/robot_name.sh new)
   run bash robot_name.sh display_all
 
@@ -48,4 +48,16 @@ teardown() {
   [[ "$status" -eq "0" ]]
   [[ "${lines[0]}" = "ROBOT: $ROBOT_ONE, TIMES RESTARTED: 0" ]]
   [[ "${lines[1]}" = "ROBOT: $ROBOT_TWO, TIMES RESTARTED: 0" ]]
+}
+
+@test "a specific robot's information is displayed" {
+  ROBOT_ONE=$(bash $PWD/robot_name.sh new)
+  ROBOT_TWO=$(bash $PWD/robot_name.sh new)
+  ROBOT_THREE=$(bash $PWD/robot_name.sh new)
+  ROBOT_FOUR=$(bash $PWD/robot_name.sh new)
+  ROBOT_FIVE=$(bash $PWD/robot_name.sh new)
+  run bash robot_name.sh display $ROBOT_THREE
+
+  [[ "$status" -eq "0" ]]
+  [[ "$output" = "ROBOT: $ROBOT_THREE, TIMES RESTARTED: 0" ]]
 }

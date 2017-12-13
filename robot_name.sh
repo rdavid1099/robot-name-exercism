@@ -22,6 +22,14 @@ save_names_metadata() {
   fi
 }
 
+print_meta() {
+  while read bot; do
+    ROBOT_INFO=""
+    [[ "$(echo $bot | cut -d ";" -f 1)" = "$1" || "all" = "$1" ]] && format_robot_info bot
+    [[ "$ROBOT_INFO" != "" ]] && echo $ROBOT_INFO
+  done <.meta.robot_name
+}
+
 format_robot_info() {
   robot_name=$(echo $bot | cut -d ";" -f 1)
   restart_amt=$(echo $bot | cut -d ";" -f 2)
@@ -33,12 +41,11 @@ case $1 in
     generate_new_name
     echo $NEW_ROBOT_NAME
   ;;
+  display)
+    print_meta $2
+  ;;
   display_all)
-    while read bot; do
-      ROBOT_INFO=""
-      format_robot_info bot
-      echo $ROBOT_INFO
-    done <.meta.robot_name
+    print_meta all
   ;;
   *)
     echo "ERROR: Invalid command"
