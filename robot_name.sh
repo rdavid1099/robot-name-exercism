@@ -54,7 +54,7 @@ get_bot_info() {
   while read bot; do
     [[ "$(echo $bot | cut -d ";" -f 1)" = "$1" ]] && format_robot_info bot
   done <.meta.robot_name
-  [[ "$ROBOT_INFO" = "" ]] && robot_not_found_error
+  [[ "$ROBOT_INFO" = "" ]] && robot_not_found_error $1
 }
 
 format_robot_info() {

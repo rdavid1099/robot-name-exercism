@@ -78,3 +78,23 @@ teardown() {
   [[ "$status" -eq "0" ]]
   [[ "$output" = "ROBOT: $NEW_NAME, TIMES RESTARTED: 1" ]]
 }
+
+@test "error is printed if unknown robot is passed to be restarted" {
+  ROBOT=$(bash $PWD/robot_name.sh new)
+  run bash robot_name.sh restart R2D2
+
+  [[ "$status" -eq "0" ]]
+  [[ "$output" = "ERROR: Invalid name given. Could not find data on R2D2." ]]
+}
+
+@test "robot is reset multiple times" {
+  ROBOT=$(bash $PWD/robot_name.sh new)
+  RESTART=$(bash $PWD/robot_name.sh restart $ROBOT)
+  RESTART=$(bash $PWD/robot_name.sh restart $RESTART)
+  RESTART=$(bash $PWD/robot_name.sh restart $RESTART)
+  RESTART=$(bash $PWD/robot_name.sh restart $RESTART)
+  run bash robot_name.sh display $RESTART
+
+  [[ "$status" -eq "0" ]]
+  [[ "$output" = "ROBOT: $RESTART, TIMES RESTARTED: 4" ]]
+}
